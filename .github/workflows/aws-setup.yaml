@@ -14,14 +14,8 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Debug GitHub identity
-        run: |
-          echo "Repository: ${{ github.repository }}"
-          echo "Repository ID: ${{ github.repository_id }}"
-          echo "Owner: ${{ github.repository_owner }}"
-          echo "Owner ID: ${{ github.repository_owner_id }}"
-          echo "Ref: ${{ github.ref }}"
-          echo "Branch: ${{ github.ref_name }}"
+      - name: Checkout
+        uses: actions/checkout@v4
 
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v4
@@ -29,3 +23,6 @@ jobs:
           role-to-assume: arn:aws:iam::102582899040:role/GitHubActionsTerraformRole
           aws-region: ap-south-1
           audience: sts.amazonaws.com
+
+      - name: Test AWS
+        run: aws sts get-caller-identity
